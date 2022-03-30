@@ -24,5 +24,4 @@ public class HelloConfiguration {
         viewResolver.setSuffix(RESOLVER_SUFFIX);
         return viewResolver;
     }
-
 }
