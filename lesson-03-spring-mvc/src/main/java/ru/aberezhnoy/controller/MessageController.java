@@ -2,15 +2,14 @@ package ru.aberezhnoy.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import ru.aberezhnoy.MessageProvider;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.aberezhnoy.model.Message;
 import ru.aberezhnoy.service.MessageService;
-
-import javax.xml.crypto.dsig.spec.XPathFilterParameterSpec;
 
 @Controller
 @RequestMapping("/message")
@@ -44,7 +43,7 @@ public class MessageController {
     //localhost:8080/spring/message/{id}?random=true
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public String getMessageId(Model model, @PathVariable Integer id,
-                               @RequestParam(name="random", defaultValue = "false", required = false) Boolean isRandom) {
+                               @RequestParam(name = "random", defaultValue = "false", required = false) Boolean isRandom) {
         Message message;
         if (isRandom) {
             message = messageService.getRandomMessage();
