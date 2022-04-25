@@ -4,36 +4,36 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.aberezhnoy.entity.Manufacturer;
+import ru.aberezhnoy.entity.Product;
 
 //@Component
 @RequiredArgsConstructor
-public class JdbcTemplateManufacturerDao implements ManufacturerDao {
+public class JdbcTemplateProductDao implements ProductDao {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public String findNameById(Long id) {
-        return jdbcTemplate.queryForObject("SELECT name FROM manufacturer WHERE id = ?", String.class, id);
+    public String findTitleById(Long id) {
+        return jdbcTemplate.queryForObject("SELECT title FROM product WHERE id = ?", String.class, id);
     }
 
     @Override
-    public Iterable<Manufacturer> findAll() {
+    public Iterable<Product> findAll() {
         return null;
     }
 
     @Override
-    public Manufacturer findById(Long id) {
+    public Product findById(Long id) {
         return null;
     }
 
-
     @Override
-    public void insert(Manufacturer manufacturer) {
+    public void insert(Product product) {
 
     }
 
     @Override
-    public void update(Manufacturer manufacturer) {
+    public void update(Product product) {
 
     }
 

@@ -3,6 +3,7 @@ package ru.aberezhnoy.dao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.aberezhnoy.entity.Manufacturer;
+import ru.aberezhnoy.entity.Product;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -14,24 +15,26 @@ import java.util.Set;
 
 //@Component
 @RequiredArgsConstructor
-public class SpringJdbcManufacturerDao implements ManufacturerDao {
+public class SpringJdbcProductDao implements ProductDao {
 
     private final DataSource dataSource;
 
     @Override
-    public Iterable<Manufacturer> findAll() {
-        Set<Manufacturer> manufacturers = new HashSet<>();
+    public Iterable<Product> findAll() {
+        Set<Product> products = new HashSet<>();
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement("select * from manufacturers");
+            PreparedStatement statement = connection.prepareStatement("select * from product");
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                final Manufacturer manufacturer = Manufacturer.builder()
+                final Product product = Product.builder()
                         .id(resultSet.getLong("id"))
-                        .name(resultSet.getString("name"))
+                        .title(resultSet.getString("title"))
+                        .cost(resultSet.getBigDecimal("cost"))
+                        .date(resultSet.getDate("manufacture_date").toLocalDate())
                         .build();
-                manufacturers.add(manufacturer);
+                products.add(product);
             }
             statement.close();
         } catch (SQLException e) {
@@ -44,26 +47,26 @@ public class SpringJdbcManufacturerDao implements ManufacturerDao {
                 e.printStackTrace();
             }
         }
-        return manufacturers;
+        return products;
     }
 
     @Override
-    public String findNameById(Long id) {
+    public String findTitleById(Long id) {
         return null;
     }
 
     @Override
-    public Manufacturer findById(Long id) {
+    public Product findById(Long id) {
         return null;
     }
 
     @Override
-    public void insert(Manufacturer manufacturer) {
+    public void insert(Product product) {
 
     }
 
     @Override
-    public void update(Manufacturer manufacturer) {
+    public void update(Product product) {
 
     }
 

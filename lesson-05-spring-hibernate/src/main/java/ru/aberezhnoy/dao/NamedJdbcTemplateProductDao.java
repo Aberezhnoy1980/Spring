@@ -14,44 +14,41 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
+//@Component
 @RequiredArgsConstructor
-public class NamedJdbcTemplateManufacturerDao implements ManufacturerDao {
+public class NamedJdbcTemplateProductDao implements ProductDao {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public Iterable<Manufacturer> findAll() {
-        String sql = "SELECT * FROM manufacturer";
-        return namedParameterJdbcTemplate.query(sql, new ManufacturerMapper());
+    public Iterable<Product> findAll() {
+        String sql = "SELECT * FROM product";
+        return namedParameterJdbcTemplate.query(sql, new ProductMapper());
     }
 
     @Override
-    public String findNameById(Long id) {
-        String sql = "SELECT name FROM manufacturer WHERE id = :manufacturerId";
+    public String findTitleById(Long id) {
+        String sql = "SELECT title FROM product WHERE id = :id";
         Map<String, Object> namedParameters = new HashMap<>();
-        namedParameters.put("manufacturerId", id);
+        namedParameters.put("id", id);
         return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, String.class);
     }
 
     @Override
-    public Manufacturer findById(Long id) {
-        String sql = "SELECT name, p.id as product_id, title, cost, MANUFACTURE_DATE, MANUFACTURE_ID\n" +
-                "FROM MANUFACTURE m\n" +
-                "INNER JOIN PRODUCT p on m.ID = p.MANUFACTURE_ID\n" +
-                "WHERE m.id = :manufactureId;";
+    public Product findById(Long id) {
+        String sql = "SELECT * FROM product WHERE id = :id";
         Map<String, Object> namedParameters = new HashMap<>();
-        namedParameters.put("manufactureId", id);
-        return namedParameterJdbcTemplate.query(sql, namedParameters, new ManufacturerWithProductExtractor());
+        namedParameters.put("id", id);
+        return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, new ProductMapper());
     }
 
     @Override
-    public void insert(Manufacturer manufacturer) {
+    public void insert(Product product) {
 
     }
 
     @Override
-    public void update(Manufacturer manufacturer) {
+    public void update(Product product) {
 
     }
 
@@ -60,13 +57,15 @@ public class NamedJdbcTemplateManufacturerDao implements ManufacturerDao {
 
     }
 
-    private static class ManufacturerMapper implements RowMapper<Manufacturer> {
+    private static class ProductMapper implements RowMapper<Product> {
 
         @Override
-        public Manufacturer mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return ru.aberezhnoy.entity.Manufacturer.builder()
+        public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return Product.builder()
                     .id(rs.getLong("id"))
-                    .name(rs.getString("name"))
+                    .title(rs.getString("title"))
+                    .cost(rs.getBigDecimal("cost"))
+                    .date(rs.getDate("manufacture_date").toLocalDate())
                     .build();
         }
     }

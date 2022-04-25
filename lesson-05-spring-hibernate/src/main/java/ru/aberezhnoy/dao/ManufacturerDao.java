@@ -8,7 +8,7 @@ public interface ManufacturerDao {
 
     public String findNameById(Long id);
 
-    Manufacturer findByIb(Long id);
+    Manufacturer findById(Long id);
 
     void insert(Manufacturer manufacturer);
 
