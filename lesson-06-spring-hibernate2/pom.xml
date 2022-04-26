@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>lesson-06-spring-hibernate2</artifactId>
+    <packaging>war</packaging>
 
     <dependencies>
         <dependency>
@@ -60,6 +61,7 @@
             <artifactId>spring-orm</artifactId>
             <version>5.3.15</version>
         </dependency>
+
     </dependencies>
 
 </project>
